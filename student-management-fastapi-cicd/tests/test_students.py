@@ -6,10 +6,21 @@ client = TestClient(app)
 
 
 def get_token():
+    client.post(
+        "/auth/register",
+        json={
+            "username": "studentadmin",
+            "email": "studentadmin@example.com",
+            "password": "admin123",
+            "role": "admin",
+        },
+    )
+
     response = client.post(
         "/auth/login",
-        data={"username": "admin", "password": "admin123"},
+        data={"username": "studentadmin", "password": "admin123"},
     )
+
     return response.json()["access_token"]
 
 
