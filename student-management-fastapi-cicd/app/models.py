@@ -7,7 +7,35 @@ class Student(Base):
     __tablename__ = "students"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), nullable=False)
-    email = Column(String(150), unique=True, index=True, nullable=False)
-    course = Column(String(100), nullable=False)
-    phone = Column(String(20), nullable=True)
+    name = Column(String(100))
+    email = Column(String(150))
+    course = Column(String(100))
+    phone = Column(String(20))
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    username = Column(
+        String(50),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+
+    email = Column(
+        String(150),
+        unique=True,
+        nullable=False
+    )
+
+    hashed_password = Column(
+        String(255),
+        nullable=False
+    )
+
+    role = Column(
+        String(20),
+        default="user"
+    )
