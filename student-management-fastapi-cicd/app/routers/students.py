@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app import crud, schemas
-from app.auth import get_current_user
+from app.auth import get_current_user, admin_required
 from app.database import get_db
 
 router = APIRouter(prefix="/students", tags=["Students"])
@@ -72,7 +72,7 @@ def update_student(
 def delete_student(
     student_id: int,
     db: Session = Depends(get_db),
-    current_user: str = Depends(get_current_user),
+    current_user: dict = Depends(admin_required),
 ):
     deleted_student = crud.delete_student(db, student_id)
 
