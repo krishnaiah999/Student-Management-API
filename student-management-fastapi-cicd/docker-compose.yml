@@ -1,0 +1,11 @@
+services:
+  student-api:
+    build: .
+    container_name: student-fastapi-api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:///./students.db
+      SECRET_KEY: my-super-secret-key
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
