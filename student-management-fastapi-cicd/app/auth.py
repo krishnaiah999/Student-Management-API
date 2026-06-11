@@ -3,11 +3,14 @@ from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-
+from passlib.context import CryptContext
 from app.config import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
-
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
 # Demo user for interview/practice.
 # In production, users must come from DB and password must be hashed.
 FAKE_USER = {
@@ -42,3 +45,9 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> str:
         return username
     except JWTError:
         raise credentials_exception
+def hash_password(password: str) -> str:
+    return pwd_context.hash(password)
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
